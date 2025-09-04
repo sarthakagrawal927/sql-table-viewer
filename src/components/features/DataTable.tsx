@@ -70,9 +70,9 @@ export function DataTable({ result, isLoading }: DataTableProps) {
           </span>
         )
       },
-      size: undefined, // Auto-size columns based on content
-      minSize: 120,    // Minimum column width
-      maxSize: 300,    // Maximum column width  
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
     }))
   }, [result])
 
@@ -188,7 +188,7 @@ export function DataTable({ result, isLoading }: DataTableProps) {
             }}
           >
             <div style={{ height: `${virtualizer.getTotalSize()}px`, minWidth: 'max-content' }} className="relative">
-              <table style={{ minWidth: 'max-content', width: '100%' }}>
+              <table className="table-fixed" style={{ minWidth: 'max-content', width: '100%' }}>
                   <thead className="sticky top-0 z-10 bg-background border-b">
                     {table.getHeaderGroups().map(headerGroup => (
                       <tr key={headerGroup.id}>

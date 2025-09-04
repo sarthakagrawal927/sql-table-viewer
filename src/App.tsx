@@ -32,30 +32,33 @@ function App() {
   const activeTab = tabs.find(tab => tab.id === activeTabId)!
 
   const addTab = () => {
-    const newTab: QueryTab = {
-      id: `tab-${Date.now()}`,
-      name: `Query ${tabs.length + 1}`,
-      query: 'SELECT * FROM employees',
-      result: null,
-      isExecuting: false,
-    }
-    setTabs([...tabs, newTab])
-    setActiveTabId(newTab.id)
+    const id = `tab-${Date.now()}`
+    setTabs(prev => {
+      const newTab: QueryTab = {
+        id,
+        name: `Query ${prev.length + 1}`,
+        query: 'SELECT * FROM employees',
+        result: null,
+        isExecuting: false,
+      }
+      return [...prev, newTab]
+    })
+    setActiveTabId(id)
   }
 
   const closeTab = (tabId: string) => {
-    if (tabs.length === 1) return
-    const newTabs = tabs.filter(t => t.id !== tabId)
-    setTabs(newTabs)
-    if (activeTabId === tabId) {
-      setActiveTabId(newTabs[0].id)
-    }
+    setTabs(prevTabs => {
+      if (prevTabs.length === 1) return prevTabs
+      const newTabs = prevTabs.filter(t => t.id !== tabId)
+      setActiveTabId(prevActive => (prevActive === tabId ? newTabs[0].id : prevActive))
+      return newTabs
+    })
   }
 
   const updateTab = (tabId: string, updates: Partial<QueryTab>) => {
-    setTabs(tabs.map(tab => 
-      tab.id === tabId ? { ...tab, ...updates } : tab
-    ))
+    setTabs(prevTabs =>
+      prevTabs.map(tab => (tab.id === tabId ? { ...tab, ...updates } : tab))
+    )
   }
 
   const handleExecuteQuery = () => {
