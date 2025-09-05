@@ -1,6 +1,6 @@
 import { Database, Menu, Moon, Sun, Settings } from 'lucide-react'
 import { Button } from '../ui/button'
-import { useTheme } from '../theme-provider'
+import { useTheme } from '../theme-context'
 
 interface HeaderProps {
   sidebarOpen: boolean
@@ -29,7 +29,6 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
         <div className="flex items-center space-x-2 flex-1">
           <Database className="h-6 w-6 text-primary" />
           <h1 className="text-lg font-semibold">SQL Query Viewer</h1>
-          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">v1.0.0</span>
         </div>
 
         <div className="flex items-center space-x-2">

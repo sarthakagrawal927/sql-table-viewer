@@ -1,0 +1,130 @@
+{
+  "id": "projects",
+  "name": "Project Portfolio",
+  "description": "Active and completed projects with timelines, budgets, and team assignments",
+  "category": "Project Management",
+  "columns": [
+    { "id": "projectId", "name": "project_id", "type": "string" },
+    { "id": "name", "name": "name", "type": "string" },
+    { "id": "description", "name": "description", "type": "string" },
+    { "id": "status", "name": "status", "type": "string" },
+    { "id": "priority", "name": "priority", "type": "string" },
+    { "id": "budget", "name": "budget", "type": "number" },
+    { "id": "teamLead", "name": "team_lead", "type": "string" },
+    { "id": "department", "name": "department", "type": "string" },
+    { "id": "startDate", "name": "start_date", "type": "date" },
+    { "id": "endDate", "name": "end_date", "type": "date" },
+    { "id": "completionPercentage", "name": "completion_percentage", "type": "number" }
+  ],
+  "rows": [
+    {
+      "projectId": "PRJ-2024-001",
+      "name": "Mobile App Redesign",
+      "description": "Complete overhaul of mobile application UI/UX",
+      "status": "In Progress",
+      "priority": "High",
+      "budget": 450000,
+      "teamLead": "Sarah Wilson",
+      "department": "Engineering",
+      "startDate": "2024-01-15",
+      "endDate": "2024-06-30",
+      "completionPercentage": 65
+    },
+    {
+      "projectId": "PRJ-2024-002",
+      "name": "Customer Analytics Platform",
+      "description": "Build comprehensive analytics dashboard for customer insights",
+      "status": "Planning",
+      "priority": "Medium",
+      "budget": 320000,
+      "teamLead": "David Chen",
+      "department": "Marketing",
+      "startDate": "2024-03-01",
+      "endDate": "2024-09-15",
+      "completionPercentage": 15
+    },
+    {
+      "projectId": "PRJ-2023-015",
+      "name": "Cloud Migration",
+      "description": "Migrate legacy systems to cloud infrastructure",
+      "status": "Completed",
+      "priority": "High",
+      "budget": 850000,
+      "teamLead": "Robert Kim",
+      "department": "IT Operations",
+      "startDate": "2023-06-01",
+      "endDate": "2023-12-31",
+      "completionPercentage": 100
+    },
+    {
+      "projectId": "PRJ-2024-003",
+      "name": "Sales CRM Integration",
+      "description": "Integrate new CRM system with existing sales processes",
+      "status": "In Progress",
+      "priority": "High",
+      "budget": 280000,
+      "teamLead": "Jennifer Lopez",
+      "department": "Sales",
+      "startDate": "2024-02-01",
+      "endDate": "2024-07-31",
+      "completionPercentage": 40
+    },
+    {
+      "projectId": "PRJ-2024-004",
+      "name": "AI Research Initiative",
+      "description": "Explore machine learning applications for product enhancement",
+      "status": "In Progress",
+      "priority": "Medium",
+      "budget": 720000,
+      "teamLead": "Alex Rodriguez",
+      "department": "Research & Development",
+      "startDate": "2024-01-01",
+      "endDate": "2024-12-31",
+      "completionPercentage": 30
+    },
+    {
+      "projectId": "PRJ-2023-012",
+      "name": "Employee Training Portal",
+      "description": "Develop online training platform for staff development",
+      "status": "Completed",
+      "priority": "Low",
+      "budget": 180000,
+      "teamLead": "Michael Thompson",
+      "department": "Human Resources",
+      "startDate": "2023-04-15",
+      "endDate": "2023-11-30",
+      "completionPercentage": 100
+    },
+    {
+      "projectId": "PRJ-2024-005",
+      "name": "Financial Reporting Automation",
+      "description": "Automate monthly and quarterly financial reporting processes",
+      "status": "Planning",
+      "priority": "Medium",
+      "budget": 220000,
+      "teamLead": "Lisa Wang",
+      "department": "Finance",
+      "startDate": "2024-04-01",
+      "endDate": "2024-10-31",
+      "completionPercentage": 5
+    },
+    {
+      "projectId": "PRJ-2024-006",
+      "name": "24/7 Support System",
+      "description": "Implement round-the-clock customer support infrastructure",
+      "status": "In Progress",
+      "priority": "High",
+      "budget": 390000,
+      "teamLead": "Emma Johnson",
+      "department": "Customer Support",
+      "startDate": "2024-02-15",
+      "endDate": "2024-08-15",
+      "completionPercentage": 55
+    }
+  ],
+  "sampleQueries": [
+    "SELECT * FROM projects WHERE status = 'In Progress'",
+    "SELECT * FROM projects WHERE priority = 'High'",
+    "SELECT * FROM projects"
+  ]
+}

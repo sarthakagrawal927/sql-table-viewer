@@ -1,4 +1,4 @@
-import { useMemo, useState, memo, useCallback } from 'react'
+import { useMemo, useState, memo, useCallback, useRef } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -16,7 +16,6 @@ import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import type { QueryResult, Row } from '../../types'
 import { formatRowCount, downloadAsFile } from '../../lib/utils'
-import { useRef } from 'react'
 import Papa from 'papaparse'
 
 interface DataTableProps {
@@ -34,50 +33,63 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
   const columns = useMemo<ColumnDef<Row>[]>(() => {
     if (!result) return []
 
-    return result.columns.map(col => ({
-      id: col.key,
-      accessorKey: col.key,
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 px-2 lg:px-3"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          <span className="font-medium">{col.label}</span>
-          {column.getIsSorted() === 'asc' && <ArrowUp className="ml-1 h-3 w-3" />}
-          {column.getIsSorted() === 'desc' && <ArrowDown className="ml-1 h-3 w-3" />}
-          {!column.getIsSorted() && <ArrowUpDown className="ml-1 h-3 w-3 opacity-50" />}
-        </Button>
-      ),
-      cell: ({ getValue }) => {
-        const value = getValue()
-        if (value === null || value === undefined) {
-          return <span className="text-muted-foreground italic">null</span>
-        }
-        if (typeof value === 'boolean') {
-          return <Badge variant={value ? 'default' : 'secondary'}>{String(value)}</Badge>
-        }
-        if (typeof value === 'number') {
-          return <span className="font-mono">{value.toLocaleString()}</span>
-        }
-        if (col.type === 'date' && typeof value === 'string') {
-          return <span className="font-mono">{new Date(value).toLocaleDateString()}</span>
-        }
-        return (
-          <span className="truncate block" title={String(value)}>
-            {String(value)}
-          </span>
-        )
-      },
-      size: col.key === 'email' ? 250 : col.key === 'name' ? 180 : 150, // Set specific sizes
-      minSize: col.key === 'email' ? 250 : col.key === 'name' ? 180 : 120,
-      maxSize: col.key === 'email' ? 300 : col.key === 'name' ? 220 : 200,
-    }))
+    const getColumnSize = (key: string): { size: number; minSize: number; maxSize: number } => {
+      const sizeMap: Record<string, { size: number; minSize: number; maxSize: number }> = {
+        email: { size: 250, minSize: 250, maxSize: 300 },
+        name: { size: 180, minSize: 180, maxSize: 220 },
+        description: { size: 300, minSize: 200, maxSize: 400 },
+        default: { size: 150, minSize: 120, maxSize: 200 },
+      }
+      return sizeMap[key] || sizeMap.default
+    }
+
+    return result.columns.map(col => {
+      const columnSizes = getColumnSize(col.key)
+      return {
+        id: col.key,
+        accessorKey: col.key,
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 lg:px-3"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            <span className="font-medium">{col.label}</span>
+            {column.getIsSorted() === 'asc' && <ArrowUp className="ml-1 h-3 w-3" />}
+            {column.getIsSorted() === 'desc' && <ArrowDown className="ml-1 h-3 w-3" />}
+            {!column.getIsSorted() && <ArrowUpDown className="ml-1 h-3 w-3 opacity-50" />}
+          </Button>
+        ),
+        cell: ({ getValue }) => {
+          const value = getValue()
+          if (value === null || value === undefined) {
+            return <span className="text-muted-foreground italic">null</span>
+          }
+          if (typeof value === 'boolean') {
+            return <Badge variant={value ? 'default' : 'secondary'}>{String(value)}</Badge>
+          }
+          if (typeof value === 'number') {
+            return <span className="font-mono">{value.toLocaleString()}</span>
+          }
+          if (col.type === 'date' && typeof value === 'string') {
+            return <span className="font-mono">{new Date(value).toLocaleDateString()}</span>
+          }
+          return (
+            <span className="truncate block" title={String(value)}>
+              {String(value)}
+            </span>
+          )
+        },
+        ...columnSizes,
+      }
+    })
   }, [result])
 
+  const tableData = useMemo(() => result?.rows || [], [result?.rows])
+
   const table = useReactTable({
-    data: result?.rows || [],
+    data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -91,13 +103,15 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
       columnFilters,
       globalFilter,
     },
-    // Add these options to improve performance
     enableRowSelection: false,
     enableMultiRowSelection: false,
     enableSubRowSelection: false,
     manualSorting: false,
     manualFiltering: false,
     manualPagination: false,
+    debugTable: false,
+    debugHeaders: false,
+    debugColumns: false,
   })
 
   const { rows } = table.getRowModel()
@@ -106,8 +120,8 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
     count: rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 35,
-    overscan: 5, // Reduce overscan for better performance
-    measureElement: undefined, // Disable dynamic measurement for consistent performance
+    overscan: 3,
+    measureElement: undefined,
   })
 
   const handleExport = useCallback(

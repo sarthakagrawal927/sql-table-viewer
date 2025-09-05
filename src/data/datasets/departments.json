@@ -1,0 +1,103 @@
+{
+  "id": "departments",
+  "name": "Department Directory",
+  "description": "Company departments with budgets, managers, and employee counts",
+  "category": "Organization",
+  "columns": [
+    { "id": "deptId", "name": "dept_id", "type": "number" },
+    { "id": "name", "name": "name", "type": "string" },
+    { "id": "manager", "name": "manager", "type": "string" },
+    { "id": "budget", "name": "budget", "type": "number" },
+    { "id": "employeeCount", "name": "employee_count", "type": "number" },
+    { "id": "location", "name": "location", "type": "string" },
+    { "id": "establishedDate", "name": "established_date", "type": "date" },
+    { "id": "isActive", "name": "is_active", "type": "boolean" }
+  ],
+  "rows": [
+    {
+      "deptId": 1,
+      "name": "Engineering",
+      "manager": "Sarah Wilson",
+      "budget": 2500000,
+      "employeeCount": 45,
+      "location": "Building A - Floor 3",
+      "establishedDate": "2018-01-15",
+      "isActive": true
+    },
+    {
+      "deptId": 2,
+      "name": "Marketing",
+      "manager": "David Chen",
+      "budget": 800000,
+      "employeeCount": 12,
+      "location": "Building B - Floor 2",
+      "establishedDate": "2019-03-20",
+      "isActive": true
+    },
+    {
+      "deptId": 3,
+      "name": "Sales",
+      "manager": "Jennifer Lopez",
+      "budget": 1200000,
+      "employeeCount": 28,
+      "location": "Building A - Floor 1",
+      "establishedDate": "2018-06-10",
+      "isActive": true
+    },
+    {
+      "deptId": 4,
+      "name": "Human Resources",
+      "manager": "Michael Thompson",
+      "budget": 450000,
+      "employeeCount": 8,
+      "location": "Building C - Floor 1",
+      "establishedDate": "2018-02-01",
+      "isActive": true
+    },
+    {
+      "deptId": 5,
+      "name": "Finance",
+      "manager": "Lisa Wang",
+      "budget": 600000,
+      "employeeCount": 15,
+      "location": "Building B - Floor 3",
+      "establishedDate": "2018-01-20",
+      "isActive": true
+    },
+    {
+      "deptId": 6,
+      "name": "Research & Development",
+      "manager": "Alex Rodriguez",
+      "budget": 1800000,
+      "employeeCount": 22,
+      "location": "Building D - Floor 2",
+      "establishedDate": "2020-09-15",
+      "isActive": true
+    },
+    {
+      "deptId": 7,
+      "name": "Customer Support",
+      "manager": "Emma Johnson",
+      "budget": 350000,
+      "employeeCount": 18,
+      "location": "Building A - Floor 2",
+      "establishedDate": "2019-11-01",
+      "isActive": true
+    },
+    {
+      "deptId": 8,
+      "name": "IT Operations",
+      "manager": "Robert Kim",
+      "budget": 900000,
+      "employeeCount": 12,
+      "location": "Building C - Floor 3",
+      "establishedDate": "2018-05-12",
+      "isActive": false
+    }
+  ],
+  "sampleQueries": [
+    "SELECT * FROM departments WHERE budget > 1000000",
+    "SELECT * FROM departments WHERE is_active = true",
+    "SELECT * FROM departments"
+  ]
+}

@@ -5,13 +5,13 @@ import { Badge } from '../ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { BookOpen, History, Star, Play, Database } from 'lucide-react'
 import { sampleQueries } from '../../data/sampleData'
-import type { SQLQuery } from '../../types'
+import type { SQLQuery, QueryHistoryItem } from '../../types'
 
 interface SidebarProps {
   className?: string
-  queryHistory?: any[]
+  queryHistory?: QueryHistoryItem[]
   onQuerySelect: (query: SQLQuery) => void
-  onHistorySelect?: (item: any) => void
+  onHistorySelect?: (item: QueryHistoryItem) => void
 }
 
 export function Sidebar({ className, queryHistory = [], onQuerySelect, onHistorySelect }: SidebarProps) {
@@ -180,4 +180,3 @@ function QueryItem({ query, onSelect }: QueryItemProps) {
     </div>
   )
 }
-

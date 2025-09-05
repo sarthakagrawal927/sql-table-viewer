@@ -1,0 +1,94 @@
+{
+  "id": "products",
+  "name": "Product Catalog",
+  "description": "E-commerce product database with categories, prices, and inventory",
+  "category": "E-commerce",
+  "columns": [
+    { "id": "productId", "name": "product_id", "type": "number" },
+    { "id": "name", "name": "name", "type": "string" },
+    { "id": "category", "name": "category", "type": "string" },
+    { "id": "price", "name": "price", "type": "number" },
+    { "id": "stock", "name": "stock", "type": "number" },
+    { "id": "rating", "name": "rating", "type": "number" },
+    { "id": "createdAt", "name": "created_at", "type": "date" }
+  ],
+  "rows": [
+    {
+      "productId": 101,
+      "name": "Wireless Headphones",
+      "category": "Electronics",
+      "price": 199.99,
+      "stock": 45,
+      "rating": 4.5,
+      "createdAt": "2023-01-15"
+    },
+    {
+      "productId": 102,
+      "name": "Coffee Mug",
+      "category": "Kitchen",
+      "price": 12.99,
+      "stock": 120,
+      "rating": 4.2,
+      "createdAt": "2023-02-20"
+    },
+    {
+      "productId": 103,
+      "name": "Laptop Stand",
+      "category": "Electronics",
+      "price": 89.99,
+      "stock": 23,
+      "rating": 4.7,
+      "createdAt": "2023-03-10"
+    },
+    {
+      "productId": 104,
+      "name": "Desk Lamp",
+      "category": "Furniture",
+      "price": 45.0,
+      "stock": 67,
+      "rating": 4.0,
+      "createdAt": "2023-01-30"
+    },
+    {
+      "productId": 105,
+      "name": "Bluetooth Speaker",
+      "category": "Electronics",
+      "price": 79.99,
+      "stock": 89,
+      "rating": 4.3,
+      "createdAt": "2023-04-05"
+    },
+    {
+      "productId": 106,
+      "name": "Office Chair",
+      "category": "Furniture",
+      "price": 299.99,
+      "stock": 12,
+      "rating": 4.6,
+      "createdAt": "2023-02-15"
+    },
+    {
+      "productId": 107,
+      "name": "Water Bottle",
+      "category": "Kitchen",
+      "price": 24.99,
+      "stock": 156,
+      "rating": 4.1,
+      "createdAt": "2023-03-22"
+    },
+    {
+      "productId": 108,
+      "name": "Monitor",
+      "category": "Electronics",
+      "price": 349.99,
+      "stock": 28,
+      "rating": 4.8,
+      "createdAt": "2023-01-08"
+    }
+  ],
+  "sampleQueries": [
+    "SELECT * FROM products WHERE category = 'Electronics'",
+    "SELECT * FROM products",
+    "SELECT * FROM products LIMIT 5"
+  ]
+}

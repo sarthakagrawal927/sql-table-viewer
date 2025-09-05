@@ -14,9 +14,10 @@ export interface QueryResult {
   rows: Row[]
   executionTime: number
   rowCount: number
+  error?: string
 }
 
-export interface Column {
+interface Column {
   key: string
   label: string
   type: 'string' | 'number' | 'boolean' | 'date' | 'null'
@@ -24,6 +25,14 @@ export interface Column {
 }
 
 export type Row = Record<string, string | number | boolean | null>
+
+export interface QueryHistoryItem {
+  id: number
+  query: string
+  timestamp: Date
+  executionTime: number
+  rowCount: number
+}
 
 export interface DataSet {
   id: string
@@ -38,3 +47,11 @@ export interface DataSet {
   rows: Row[]
   sampleQueries: string[]
 }
+
+export interface QueryTab {
+  id: string
+  name: string
+  query: string
+  isExecuting: boolean
+}
+

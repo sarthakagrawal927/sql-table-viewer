@@ -1,0 +1,123 @@
+{
+  "id": "sales",
+  "name": "Sales Transactions",
+  "description": "Sales data with customer information, products, and transaction details",
+  "category": "Sales",
+  "columns": [
+    { "id": "transactionId", "name": "transaction_id", "type": "string" },
+    { "id": "customerName", "name": "customer_name", "type": "string" },
+    { "id": "productName", "name": "product_name", "type": "string" },
+    { "id": "quantity", "name": "quantity", "type": "number" },
+    { "id": "unitPrice", "name": "unit_price", "type": "number" },
+    { "id": "totalAmount", "name": "total_amount", "type": "number" },
+    { "id": "transactionDate", "name": "transaction_date", "type": "date" },
+    { "id": "region", "name": "region", "type": "string" }
+  ],
+  "rows": [
+    {
+      "transactionId": "TXN-0001",
+      "customerName": "John Smith",
+      "productName": "Laptop",
+      "quantity": 1,
+      "unitPrice": 1200,
+      "totalAmount": 1200,
+      "transactionDate": "2023-01-15",
+      "region": "North"
+    },
+    {
+      "transactionId": "TXN-0002",
+      "customerName": "Emma Johnson",
+      "productName": "Mouse",
+      "quantity": 2,
+      "unitPrice": 25,
+      "totalAmount": 50,
+      "transactionDate": "2023-01-20",
+      "region": "South"
+    },
+    {
+      "transactionId": "TXN-0003",
+      "customerName": "Michael Brown",
+      "productName": "Keyboard",
+      "quantity": 1,
+      "unitPrice": 75,
+      "totalAmount": 75,
+      "transactionDate": "2023-02-10",
+      "region": "East"
+    },
+    {
+      "transactionId": "TXN-0004",
+      "customerName": "Sarah Davis",
+      "productName": "Monitor",
+      "quantity": 1,
+      "unitPrice": 300,
+      "totalAmount": 300,
+      "transactionDate": "2023-02-15",
+      "region": "West"
+    },
+    {
+      "transactionId": "TXN-0005",
+      "customerName": "David Wilson",
+      "productName": "Webcam",
+      "quantity": 1,
+      "unitPrice": 80,
+      "totalAmount": 80,
+      "transactionDate": "2023-03-01",
+      "region": "North"
+    },
+    {
+      "transactionId": "TXN-0006",
+      "customerName": "Lisa Anderson",
+      "productName": "Headset",
+      "quantity": 1,
+      "unitPrice": 120,
+      "totalAmount": 120,
+      "transactionDate": "2023-03-10",
+      "region": "South"
+    },
+    {
+      "transactionId": "TXN-0007",
+      "customerName": "Robert Taylor",
+      "productName": "Tablet",
+      "quantity": 1,
+      "unitPrice": 500,
+      "totalAmount": 500,
+      "transactionDate": "2023-04-05",
+      "region": "East"
+    },
+    {
+      "transactionId": "TXN-0008",
+      "customerName": "Jennifer Martinez",
+      "productName": "Phone",
+      "quantity": 1,
+      "unitPrice": 800,
+      "totalAmount": 800,
+      "transactionDate": "2023-04-20",
+      "region": "West"
+    },
+    {
+      "transactionId": "TXN-0009",
+      "customerName": "William Garcia",
+      "productName": "Charger",
+      "quantity": 3,
+      "unitPrice": 30,
+      "totalAmount": 90,
+      "transactionDate": "2023-05-12",
+      "region": "North"
+    },
+    {
+      "transactionId": "TXN-0010",
+      "customerName": "Mary Rodriguez",
+      "productName": "Cable",
+      "quantity": 5,
+      "unitPrice": 15,
+      "totalAmount": 75,
+      "transactionDate": "2023-05-25",
+      "region": "South"
+    }
+  ],
+  "sampleQueries": [
+    "SELECT * FROM sales WHERE total_amount > 1000",
+    "SELECT * FROM sales",
+    "SELECT * FROM sales LIMIT 5"
+  ]
+}

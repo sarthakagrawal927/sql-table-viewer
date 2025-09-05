@@ -1,0 +1,23 @@
+[
+  {
+    "id": "query-1",
+    "name": "All Employees",
+    "sql": "SELECT * FROM employees",
+    "description": "View all employee records",
+    "category": "HR Analytics"
+  },
+  {
+    "id": "query-2",
+    "name": "All Departments",
+    "sql": "SELECT * FROM departments",
+    "description": "View all department records",
+    "category": "Organization"
+  },
+  {
+    "id": "query-3",
+    "name": "Active Projects",
+    "sql": "SELECT * FROM projects WHERE status = 'In Progress'",
+    "description": "Show projects currently in progress",
+    "category": "Project Management"
+  }
+]

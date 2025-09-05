@@ -5,14 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatExecutionTime(ms: number): string {
-  if (ms < 1000) {
-    return `${ms.toFixed(0)}ms`
-  }
-  return `${(ms / 1000).toFixed(2)}s`
-}
-
-export function downloadAsFile(data: string, filename: string, type: string) {
+export function downloadAsFile(data: string, filename: string, type: string): void {
   const blob = new Blob([data], { type })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -33,3 +26,4 @@ export function formatRowCount(count: number): string {
   }
   return `${(count / 1000000).toFixed(1)}M`
 }
+

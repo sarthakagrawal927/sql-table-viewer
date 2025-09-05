@@ -1,11 +1,13 @@
 import { useState, useCallback, useMemo } from 'react'
 import { ThemeProvider } from './components/theme-provider'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/features/Header'
 import { Sidebar } from './components/features/Sidebar'
 import { QueryEditor } from './components/features/QueryEditor'
 import { QueryTabs } from './components/features/QueryTabs'
 import { DataTable } from './components/features/DataTable'
-import { QueryProvider, useQuery } from './contexts/QueryContext'
+import { QueryProvider } from './contexts/QueryContext'
+import { useQuery } from './contexts/useQuery'
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
@@ -25,7 +27,7 @@ function AppContent() {
     setQueryInEditor,
   } = useQuery()
 
-  const activeTab = tabs.find(tab => tab.id === activeTabId)!
+  const activeTab = tabs.find(tab => tab.id === activeTabId)
 
   // Memoize the current result to prevent unnecessary re-renders
   const currentResult = useMemo(() => {
@@ -70,8 +72,9 @@ function AppContent() {
                   onSetActiveTab={setActiveTabId}
                 />
                 <QueryEditor
+                  key={activeTab?.id}
                   ref={queryEditorRef}
-                  initialQuery={activeTab.query}
+                  initialQuery={activeTab?.query ?? ''}
                   isExecuting={isExecuting}
                   onExecuteQuery={executeQuery}
                 />
@@ -110,9 +113,11 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryProvider>
-      <AppContent />
-    </QueryProvider>
+    <ErrorBoundary>
+      <QueryProvider>
+        <AppContent />
+      </QueryProvider>
+    </ErrorBoundary>
   )
 }
 

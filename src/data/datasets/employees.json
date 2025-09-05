@@ -1,0 +1,94 @@
+{
+  "id": "employees",
+  "name": "Employee Records",
+  "description": "Sample employee database with departments, salaries, and hire dates",
+  "category": "HR",
+  "columns": [
+    { "id": "id", "name": "id", "type": "number" },
+    { "id": "name", "name": "name", "type": "string" },
+    { "id": "email", "name": "email", "type": "string" },
+    { "id": "department", "name": "department", "type": "string" },
+    { "id": "salary", "name": "salary", "type": "number" },
+    { "id": "hireDate", "name": "hireDate", "type": "date" },
+    { "id": "isActive", "name": "isActive", "type": "boolean" }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@company.com",
+      "department": "Engineering",
+      "salary": 95000,
+      "hireDate": "2022-03-15",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane.smith@company.com",
+      "department": "Marketing",
+      "salary": 75000,
+      "hireDate": "2021-07-20",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob.johnson@company.com",
+      "department": "Engineering",
+      "salary": 88000,
+      "hireDate": "2023-01-10",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "name": "Alice Brown",
+      "email": "alice.brown@company.com",
+      "department": "Sales",
+      "salary": 82000,
+      "hireDate": "2022-09-05",
+      "isActive": false
+    },
+    {
+      "id": 5,
+      "name": "Charlie Wilson",
+      "email": "charlie.wilson@company.com",
+      "department": "HR",
+      "salary": 70000,
+      "hireDate": "2021-11-30",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "name": "Diana Ross",
+      "email": "diana.ross@company.com",
+      "department": "Engineering",
+      "salary": 110000,
+      "hireDate": "2020-06-15",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "name": "Frank Miller",
+      "email": "frank.miller@company.com",
+      "department": "Marketing",
+      "salary": 68000,
+      "hireDate": "2023-04-12",
+      "isActive": true
+    },
+    {
+      "id": 8,
+      "name": "Grace Lee",
+      "email": "grace.lee@company.com",
+      "department": "Sales",
+      "salary": 92000,
+      "hireDate": "2022-01-25",
+      "isActive": true
+    }
+  ],
+  "sampleQueries": [
+    "SELECT * FROM employees WHERE department = 'Engineering'",
+    "SELECT * FROM employees WHERE salary > 80000",
+    "SELECT * FROM employees"
+  ]
+}
