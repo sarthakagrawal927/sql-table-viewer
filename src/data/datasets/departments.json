@@ -94,10 +94,5 @@
       "establishedDate": "2018-05-12",
       "isActive": false
     }
-  ],
-  "sampleQueries": [
-    "SELECT * FROM departments WHERE budget > 1000000",
-    "SELECT * FROM departments WHERE is_active = true",
-    "SELECT * FROM departments"
   ]
 }

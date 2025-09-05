@@ -4,7 +4,7 @@ import type { editor } from 'monaco-editor'
 import { Play } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
-import { useTheme } from '../theme-context'
+import { useTheme } from '../theme-provider'
 
 interface QueryEditorProps {
   initialQuery?: string

@@ -114,10 +114,5 @@
       "transactionDate": "2023-05-25",
       "region": "South"
     }
-  ],
-  "sampleQueries": [
-    "SELECT * FROM sales WHERE total_amount > 1000",
-    "SELECT * FROM sales",
-    "SELECT * FROM sales LIMIT 5"
   ]
 }

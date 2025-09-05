@@ -1,16 +1,16 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { ThemeProvider } from './components/theme-provider'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/features/Header'
 import { Sidebar } from './components/features/Sidebar'
-import { QueryEditor } from './components/features/QueryEditor'
+import { QueryEditor, type QueryEditorRef } from './components/features/QueryEditor'
 import { QueryTabs } from './components/features/QueryTabs'
 import { DataTable } from './components/features/DataTable'
-import { QueryProvider } from './contexts/QueryContext'
-import { useQuery } from './contexts/useQuery'
+import { QueryProvider, useQuery } from './contexts/QueryContext'
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+  const queryEditorRef = useRef<QueryEditorRef>(null)
   const {
     tabs,
     activeTabId,
@@ -18,29 +18,41 @@ function AppContent() {
     queryResults,
     queryHistory,
     isExecuting,
-    queryEditorRef,
     addTab,
     closeTab,
     setActiveTabId,
     setSelectedResultTabId,
-    executeQuery,
-    setQueryInEditor,
+    executeQueryForTab,
+    updateTabQuery,
   } = useQuery()
 
   const activeTab = tabs.find(tab => tab.id === activeTabId)
+
+  // Query editor functions
+  const setQueryInEditor = useCallback(
+    (query: string) => {
+      const activeId = activeTabId
+      if (!activeId) return
+      updateTabQuery(activeId, query)
+      queryEditorRef.current?.setQuery(query)
+    },
+    [activeTabId, updateTabQuery]
+  )
+
+  const executeQuery = useCallback(
+    (query: string) => {
+      const activeId = activeTabId
+      if (!activeId) return
+      updateTabQuery(activeId, query)
+      executeQueryForTab(activeId, query)
+    },
+    [activeTabId, updateTabQuery, executeQueryForTab]
+  )
 
   // Memoize the current result to prevent unnecessary re-renders
   const currentResult = useMemo(() => {
     return queryResults[selectedResultTabId] || null
   }, [queryResults, selectedResultTabId])
-
-  // Debounced tab selection handler
-  const handleTabSelection = useCallback(
-    (tabId: string) => {
-      setSelectedResultTabId(tabId)
-    },
-    [setSelectedResultTabId]
-  )
 
   return (
     <ThemeProvider defaultTheme="dark">
@@ -86,7 +98,7 @@ function AppContent() {
                     <span className="text-sm font-medium">View Results From:</span>
                     <select
                       value={selectedResultTabId}
-                      onChange={e => handleTabSelection(e.target.value)}
+                      onChange={e => setSelectedResultTabId(e.target.value)}
                       className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
                     >
                       {tabs.map(tab => (

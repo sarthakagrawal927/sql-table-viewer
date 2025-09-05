@@ -85,10 +85,5 @@
       "hireDate": "2022-01-25",
       "isActive": true
     }
-  ],
-  "sampleQueries": [
-    "SELECT * FROM employees WHERE department = 'Engineering'",
-    "SELECT * FROM employees WHERE salary > 80000",
-    "SELECT * FROM employees"
   ]
 }

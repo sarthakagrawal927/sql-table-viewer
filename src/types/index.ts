@@ -17,7 +17,7 @@ export interface QueryResult {
   error?: string
 }
 
-interface Column {
+export interface Column {
   key: string
   label: string
   type: 'string' | 'number' | 'boolean' | 'date' | 'null'
@@ -45,7 +45,7 @@ export interface DataSet {
     type: 'string' | 'number' | 'boolean' | 'date'
   }>
   rows: Row[]
-  sampleQueries: string[]
+  sampleQueries?: string[]
 }
 
 export interface QueryTab {
@@ -54,4 +54,3 @@ export interface QueryTab {
   query: string
   isExecuting: boolean
 }
-

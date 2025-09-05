@@ -85,10 +85,5 @@
       "rating": 4.8,
       "createdAt": "2023-01-08"
     }
-  ],
-  "sampleQueries": [
-    "SELECT * FROM products WHERE category = 'Electronics'",
-    "SELECT * FROM products",
-    "SELECT * FROM products LIMIT 5"
   ]
 }

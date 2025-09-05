@@ -17,9 +17,6 @@ interface SidebarProps {
 export function Sidebar({ className, queryHistory = [], onQuerySelect, onHistorySelect }: SidebarProps) {
   const [activeTab, setActiveTab] = useState<'queries' | 'history'>('queries')
 
-  const handleQuerySelect = (query: SQLQuery) => {
-    onQuerySelect(query)
-  }
 
   const favoriteQueries = sampleQueries.filter(q => q.isFavorite)
   const regularQueries = sampleQueries.filter(q => !q.isFavorite)
@@ -66,7 +63,7 @@ export function Sidebar({ className, queryHistory = [], onQuerySelect, onHistory
                       <QueryItem
                         key={query.id}
                         query={query}
-                        onSelect={handleQuerySelect}
+                        onSelect={onQuerySelect}
                       />
                     ))}
                   </CardContent>
@@ -85,7 +82,7 @@ export function Sidebar({ className, queryHistory = [], onQuerySelect, onHistory
                     <QueryItem
                       key={query.id}
                       query={query}
-                      onSelect={handleQuerySelect}
+                      onSelect={onQuerySelect}
                     />
                   ))}
                 </CardContent>
@@ -150,32 +147,23 @@ interface QueryItemProps {
 
 function QueryItem({ query, onSelect }: QueryItemProps) {
   return (
-    <div className="group p-3 rounded-md border hover:bg-accent cursor-pointer">
-      <div onClick={() => onSelect(query)}>
-        <div className="flex items-start justify-between">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-medium truncate">{query.name}</h3>
-            {query.description && (
-              <p className="text-xs text-muted-foreground mt-1">{query.description}</p>
-            )}
-            <Badge variant="outline" className="text-xs mt-2">
-              {query.category}
-            </Badge>
-          </div>
+    <div 
+      className="group p-3 rounded-md border hover:bg-accent cursor-pointer"
+      onClick={() => onSelect(query)}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-medium truncate">{query.name}</h3>
+          {query.description && (
+            <p className="text-xs text-muted-foreground mt-1">{query.description}</p>
+          )}
+          <Badge variant="outline" className="text-xs mt-2">
+            {query.category}
+          </Badge>
         </div>
-      </div>
-
-      <div className="flex items-center justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={e => {
-            e.stopPropagation()
-            onSelect(query)
-          }}
-        >
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
           <Play className="h-3 w-3" />
-        </Button>
+        </div>
       </div>
     </div>
   )

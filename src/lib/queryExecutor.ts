@@ -42,7 +42,7 @@ export async function executeQuery(
   let result: QueryResult
 
   if (options.generateLargeDataset && tableName === 'employees') {
-    result = generateLargeEmployeeDataset(dataSet, options.maxRows || 10000)
+    result = generateLargeEmployeeDataset(dataSet, options.maxRows || 50000)
   } else {
     result = processStandardQuery(dataSet, sql, options.maxRows)
   }

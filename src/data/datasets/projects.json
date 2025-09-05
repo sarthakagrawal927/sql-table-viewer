@@ -121,10 +121,5 @@
       "endDate": "2024-08-15",
       "completionPercentage": 55
     }
-  ],
-  "sampleQueries": [
-    "SELECT * FROM projects WHERE status = 'In Progress'",
-    "SELECT * FROM projects WHERE priority = 'High'",
-    "SELECT * FROM projects"
   ]
 }

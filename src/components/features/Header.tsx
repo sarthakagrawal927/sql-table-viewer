@@ -1,6 +1,6 @@
-import { Database, Menu, Moon, Sun, Settings } from 'lucide-react'
+import { Database, Menu, Moon, Sun } from 'lucide-react'
 import { Button } from '../ui/button'
-import { useTheme } from '../theme-context'
+import { useTheme } from '../theme-provider'
 
 interface HeaderProps {
   sidebarOpen: boolean
@@ -34,9 +34,6 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
         <div className="flex items-center space-x-2">
           <Button variant="ghost" size="icon" onClick={toggleTheme}>
             {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Settings className="h-4 w-4" />
           </Button>
         </div>
       </div>
