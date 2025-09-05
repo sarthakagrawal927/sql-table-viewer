@@ -9,7 +9,13 @@ interface QueryTabsProps {
   onSetActiveTab: (tabId: string) => void
 }
 
-export function QueryTabs({ tabs, activeTabId, onAddTab, onCloseTab, onSetActiveTab }: QueryTabsProps) {
+export function QueryTabs({
+  tabs,
+  activeTabId,
+  onAddTab,
+  onCloseTab,
+  onSetActiveTab,
+}: QueryTabsProps) {
   return (
     <div className="flex items-center space-x-1 border-b bg-background/50 px-4 py-2">
       {tabs.map(tab => (
@@ -38,13 +44,8 @@ export function QueryTabs({ tabs, activeTabId, onAddTab, onCloseTab, onSetActive
           )}
         </div>
       ))}
-      
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-8 w-8 p-0"
-        onClick={onAddTab}
-      >
+
+      <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={onAddTab}>
         <Plus className="h-4 w-4" />
       </Button>
     </div>

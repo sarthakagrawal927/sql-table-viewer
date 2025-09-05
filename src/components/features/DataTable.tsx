@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, memo, useCallback } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -24,7 +24,7 @@ interface DataTableProps {
   isLoading?: boolean
 }
 
-export function DataTable({ result, isLoading }: DataTableProps) {
+export const DataTable = memo(function DataTable({ result, isLoading }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = useState('')
@@ -35,8 +35,8 @@ export function DataTable({ result, isLoading }: DataTableProps) {
     if (!result) return []
 
     return result.columns.map(col => ({
-      id: col.id,
-      accessorKey: col.name,
+      id: col.key,
+      accessorKey: col.key,
       header: ({ column }) => (
         <Button
           variant="ghost"
@@ -44,7 +44,7 @@ export function DataTable({ result, isLoading }: DataTableProps) {
           className="h-8 px-2 lg:px-3"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          <span className="font-medium">{col.name}</span>
+          <span className="font-medium">{col.label}</span>
           {column.getIsSorted() === 'asc' && <ArrowUp className="ml-1 h-3 w-3" />}
           {column.getIsSorted() === 'desc' && <ArrowDown className="ml-1 h-3 w-3" />}
           {!column.getIsSorted() && <ArrowUpDown className="ml-1 h-3 w-3 opacity-50" />}
@@ -65,14 +65,14 @@ export function DataTable({ result, isLoading }: DataTableProps) {
           return <span className="font-mono">{new Date(value).toLocaleDateString()}</span>
         }
         return (
-          <span className="max-w-[200px] truncate" title={String(value)}>
+          <span className="truncate block" title={String(value)}>
             {String(value)}
           </span>
         )
       },
-      size: undefined, // Auto-size columns based on content
-      minSize: 120,    // Minimum column width
-      maxSize: 300,    // Maximum column width  
+      size: col.key === 'email' ? 250 : col.key === 'name' ? 180 : 150, // Set specific sizes
+      minSize: col.key === 'email' ? 250 : col.key === 'name' ? 180 : 120,
+      maxSize: col.key === 'email' ? 300 : col.key === 'name' ? 220 : 200,
     }))
   }, [result])
 
@@ -91,6 +91,13 @@ export function DataTable({ result, isLoading }: DataTableProps) {
       columnFilters,
       globalFilter,
     },
+    // Add these options to improve performance
+    enableRowSelection: false,
+    enableMultiRowSelection: false,
+    enableSubRowSelection: false,
+    manualSorting: false,
+    manualFiltering: false,
+    manualPagination: false,
   })
 
   const { rows } = table.getRowModel()
@@ -99,22 +106,26 @@ export function DataTable({ result, isLoading }: DataTableProps) {
     count: rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 35,
-    overscan: 10,
+    overscan: 5, // Reduce overscan for better performance
+    measureElement: undefined, // Disable dynamic measurement for consistent performance
   })
 
-  const handleExport = (format: 'csv' | 'json') => {
-    if (!result) return
+  const handleExport = useCallback(
+    (format: 'csv' | 'json') => {
+      if (!result) return
 
-    const data = table.getFilteredRowModel().rows.map(row => row.original)
+      const data = table.getFilteredRowModel().rows.map(row => row.original)
 
-    if (format === 'csv') {
-      const csv = Papa.unparse(data)
-      downloadAsFile(csv, `query-result-${Date.now()}.csv`, 'text/csv')
-    } else {
-      const json = JSON.stringify(data, null, 2)
-      downloadAsFile(json, `query-result-${Date.now()}.json`, 'application/json')
-    }
-  }
+      if (format === 'csv') {
+        const csv = Papa.unparse(data)
+        downloadAsFile(csv, `query-result-${Date.now()}.csv`, 'text/csv')
+      } else {
+        const json = JSON.stringify(data, null, 2)
+        downloadAsFile(json, `query-result-${Date.now()}.json`, 'application/json')
+      }
+    },
+    [result, table]
+  )
 
   if (isLoading) {
     return (
@@ -179,66 +190,89 @@ export function DataTable({ result, isLoading }: DataTableProps) {
 
       <CardContent className="flex-1 p-0">
         <div className="border rounded-md mx-4 mb-4">
-          <div 
-            ref={parentRef} 
+          <div
+            ref={parentRef}
             className="h-[400px] overflow-auto"
-            style={{ 
+            style={{
               scrollbarWidth: 'thin',
-              scrollbarColor: 'rgba(155, 155, 155, 0.5) transparent'
+              scrollbarColor: 'rgba(155, 155, 155, 0.5) transparent',
             }}
           >
-            <div style={{ height: `${virtualizer.getTotalSize()}px`, minWidth: 'max-content' }} className="relative">
-              <table style={{ minWidth: 'max-content', width: '100%' }}>
-                  <thead className="sticky top-0 z-10 bg-background border-b">
-                    {table.getHeaderGroups().map(headerGroup => (
-                      <tr key={headerGroup.id}>
-                        {headerGroup.headers.map(header => (
-                          <th
-                            key={header.id}
-                            className="h-10 px-2 text-left align-middle font-medium text-muted-foreground border-r last:border-r-0 bg-muted/50"
-                            style={{ width: header.getSize() }}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(header.column.columnDef.header, header.getContext())}
-                          </th>
-                        ))}
-                      </tr>
+            <table
+              style={{
+                tableLayout: 'fixed',
+                width: '100%',
+                minWidth: 'max-content',
+              }}
+            >
+              {/* Fixed header */}
+              <thead className="sticky top-0 z-10 bg-background border-b">
+                {table.getHeaderGroups().map(headerGroup => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map(header => (
+                      <th
+                        key={header.id}
+                        className="h-10 px-2 text-left align-middle font-medium text-muted-foreground border-r last:border-r-0 bg-muted/50"
+                        style={{
+                          width: `${header.getSize()}px`,
+                          minWidth: `${header.getSize()}px`,
+                          maxWidth: `${header.getSize()}px`,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
                     ))}
-                  </thead>
-                  <tbody>
-                    {virtualizer.getVirtualItems().map(virtualRow => {
-                      const row = rows[virtualRow.index]
-                      return (
-                        <tr
-                          key={row.id}
-                          className="border-b hover:bg-muted/50 transition-colors"
+                  </tr>
+                ))}
+              </thead>
+
+              {/* Virtual rows container */}
+              <tbody style={{ position: 'relative', height: `${virtualizer.getTotalSize()}px` }}>
+                {virtualizer.getVirtualItems().map(virtualRow => {
+                  const row = rows[virtualRow.index]
+                  return (
+                    <tr
+                      key={row.id}
+                      className="absolute w-full border-b hover:bg-muted/50 transition-colors"
+                      style={{
+                        height: `${virtualRow.size}px`,
+                        transform: `translateY(${virtualRow.start}px)`,
+                        top: 0,
+                        left: 0,
+                        display: 'table',
+                        tableLayout: 'fixed',
+                        width: '100%',
+                      }}
+                    >
+                      {row.getVisibleCells().map(cell => (
+                        <td
+                          key={cell.id}
+                          className="px-2 align-middle border-r last:border-r-0"
                           style={{
-                            height: `${virtualRow.size}px`,
-                            transform: `translateY(${virtualRow.start}px)`,
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
+                            width: `${cell.column.getSize()}px`,
+                            minWidth: `${cell.column.getSize()}px`,
+                            maxWidth: `${cell.column.getSize()}px`,
+                            display: 'table-cell',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
                           }}
                         >
-                          {row.getVisibleCells().map(cell => (
-                            <td
-                              key={cell.id}
-                              className="px-2 align-middle border-r last:border-r-0"
-                              style={{ width: cell.column.getSize() }}
-                            >
-                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
-                          ))}
-                        </tr>
-                      )
-                    })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         <div className="flex items-center justify-between px-4 pb-4 text-sm text-muted-foreground">
           <div>
@@ -249,4 +283,4 @@ export function DataTable({ result, isLoading }: DataTableProps) {
       </CardContent>
     </Card>
   )
-}
+})

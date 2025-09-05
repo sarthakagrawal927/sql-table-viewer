@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useAppStore } from '../stores/appStore'
 
 type Theme = 'dark' | 'light' | 'system'
 
@@ -27,8 +26,15 @@ export function ThemeProvider({
   storageKey: _storageKey = 'vite-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const { theme: storeTheme, setTheme: setStoreTheme } = useAppStore()
-  const [theme, setTheme] = React.useState<Theme>(() => storeTheme.mode || defaultTheme)
+  const storageKey = _storageKey
+  const [theme, setTheme] = React.useState<Theme>(() => {
+    try {
+      const stored = window.localStorage.getItem(storageKey)
+      return (stored as Theme) || defaultTheme
+    } catch {
+      return defaultTheme
+    }
+  })
 
   React.useEffect(() => {
     const root = window.document.documentElement
@@ -47,11 +53,18 @@ export function ThemeProvider({
     root.classList.add(theme)
   }, [theme])
 
+  React.useEffect(() => {
+    try {
+      window.localStorage.setItem(storageKey, theme)
+    } catch {
+      // ignore storage errors
+    }
+  }, [theme, storageKey])
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
       setTheme(theme)
-      setStoreTheme({ mode: theme })
     },
   }
 
