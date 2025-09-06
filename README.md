@@ -36,6 +36,10 @@ Went with react, vite and tailwind (with radix-ui) for the project.
 
 Also uses tanstack table for easier sorting, searching implementations. Tanstack-virtual to handle large datasets. Monaco editor for easy highlighting.
 
+Papaparse to get csv data.
+
+React-resizable-panels for resizable panels.
+
 Others are just minor packages that AI kind of decided it needed.
 
 ## Performance
