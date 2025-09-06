@@ -11,6 +11,7 @@ interface QueryEditorProps {
   onQueryChange: (query: string) => void
   isExecuting: boolean
   onExecuteQuery: (query: string) => void
+  height?: string
 }
 
 export function QueryEditor({
@@ -18,6 +19,7 @@ export function QueryEditor({
   onQueryChange,
   isExecuting,
   onExecuteQuery,
+  height = '200px',
 }: QueryEditorProps) {
   const { theme } = useTheme()
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
@@ -68,9 +70,12 @@ export function QueryEditor({
         </div>
       </CardHeader>
       <CardContent className="p-0 flex-1">
-        <div className="h-[200px] border-t">
+        <div
+          className="flex-1 border-t"
+          style={{ height: height === '200px' ? '200px' : 'calc(100% - 60px)' }}
+        >
           <Editor
-            height="200px"
+            height="100%"
             defaultLanguage="sql"
             theme={theme === 'dark' ? 'vs-dark' : 'light'}
             value={query}

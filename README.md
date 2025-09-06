@@ -13,19 +13,20 @@ Features (shown/implemented):
 - saved_queries
 - format, analyze, help with AI
 - downloadable content
+- auto add limit to data
+- expandable query area / data area.
+- persisted history
+- keyboard bindings
 
 Features (could have):
 - multiple queries in single query tab
-- auto add limit to data
 - autocomplete and validation (right now it just checks table name)
-- expandable query area / data area. Maybe add option to have them top down by having different layouts.
-- persisted history, queries
+-  Maybe add option to have them top down by having different layouts.
 - even larger row count handling
 - editing (with guardrails / confirmation screens)
 - mobile view (??)
 - schema explorer
 - searchable history
-- keyboard bindings
 
 ## Implementation
 

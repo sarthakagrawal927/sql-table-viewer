@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { useLocalStorage } from 'usehooks-ts'
 import type { QueryResult, QueryHistoryItem, QueryTab } from '../types'
 import { executeQuery } from '../lib/queryExecutor'
 import { v4 as uuid } from 'uuid'
@@ -48,13 +49,15 @@ export function QueryProvider({ children }: QueryProviderProps) {
     isExecuting: false,
   }
 
-  // Tab state
   const [tabs, setTabs] = useState<QueryTab[]>([initialTab])
   const [activeTabId, setActiveTabIdState] = useState<string>(initialTab.id)
 
-  // Query result state
+  const [queryHistory, setQueryHistory] = useLocalStorage<QueryHistoryItem[]>(
+    'sql-query-viewer-query-history',
+    []
+  )
+
   const [queryResults, setQueryResults] = useState<Record<string, QueryResult | null>>({})
-  const [queryHistory, setQueryHistory] = useState<QueryHistoryItem[]>([])
   const [selectedResultTabId, setSelectedResultTabIdState] = useState<string>(initialTab.id)
   const [isExecuting, setIsExecuting] = useState<boolean>(false)
 
@@ -140,7 +143,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
         setIsExecuting(false)
       }
     },
-    [isExecuting]
+    [isExecuting, setQueryHistory]
   )
 
   const setSelectedResultTabId = useCallback((tabId: string) => {
