@@ -28,7 +28,7 @@ export const sampleConnections: DBConnection[] = [
     status: 'connected',
     lastConnected: new Date('2024-01-15T10:30:00Z'),
     description: 'Main production PostgreSQL database',
-    tables: ['users', 'orders', 'products', 'payments', 'inventory', 'reviews']
+    tables: ['users', 'orders', 'products', 'payments', 'inventory', 'reviews'],
   },
   {
     id: 'conn-2',
@@ -41,7 +41,7 @@ export const sampleConnections: DBConnection[] = [
     status: 'connected',
     lastConnected: new Date('2024-01-15T09:15:00Z'),
     description: 'MySQL data warehouse for analytics',
-    tables: ['sales_fact', 'customer_dim', 'product_dim', 'time_dim', 'metrics']
+    tables: ['sales_fact', 'customer_dim', 'product_dim', 'time_dim', 'metrics'],
   },
   {
     id: 'conn-3',
@@ -53,7 +53,7 @@ export const sampleConnections: DBConnection[] = [
     username: 'local',
     status: 'disconnected',
     description: 'Local SQLite database for development',
-    tables: ['test_users', 'mock_data', 'temp_results']
+    tables: ['test_users', 'mock_data', 'temp_results'],
   },
   {
     id: 'conn-4',
@@ -66,7 +66,7 @@ export const sampleConnections: DBConnection[] = [
     status: 'error',
     lastConnected: new Date('2024-01-14T16:45:00Z'),
     description: 'Redis cache server',
-    tables: ['sessions', 'user_cache', 'query_cache', 'temp_data']
+    tables: ['sessions', 'user_cache', 'query_cache', 'temp_data'],
   },
   {
     id: 'conn-5',
@@ -79,6 +79,6 @@ export const sampleConnections: DBConnection[] = [
     status: 'connected',
     lastConnected: new Date('2024-01-15T11:00:00Z'),
     description: 'MongoDB document database',
-    tables: ['articles', 'media', 'comments', 'tags', 'categories']
-  }
+    tables: ['articles', 'media', 'comments', 'tags', 'categories'],
+  },
 ]

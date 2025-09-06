@@ -112,12 +112,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
       setIsExecuting(true)
 
       try {
-        const options = {
-          generateLargeDataset: query.toLowerCase().includes('from employees'),
-          maxRows: 50000,
-        }
-
-        const result = await executeQuery(query, options)
+        const result = await executeQuery(query)
 
         setQueryHistory(prev => [
           {

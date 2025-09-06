@@ -1,15 +1,7 @@
 import type { QueryResult, DataSet } from '../types'
 import { sampleDataSets } from '../data/sampleData'
 
-interface QueryExecutionOptions {
-  generateLargeDataset?: boolean
-  maxRows?: number
-}
-
-export async function executeQuery(
-  sql: string,
-  options: QueryExecutionOptions = {}
-): Promise<QueryResult> {
+export async function executeQuery(sql: string): Promise<QueryResult> {
   const startTime = performance.now()
 
   const fromMatch = sql.match(/\bfrom\s+(\w+)/i)
@@ -39,13 +31,7 @@ export async function executeQuery(
     }
   }
 
-  let result: QueryResult
-
-  if (options.generateLargeDataset && tableName === 'employees') {
-    result = generateLargeEmployeeDataset(dataSet, options.maxRows || 50000)
-  } else {
-    result = processStandardQuery(dataSet, sql, options.maxRows)
-  }
+  const result = processStandardQuery(dataSet, sql)
 
   const endTime = performance.now()
   result.executionTime = endTime - startTime
@@ -53,47 +39,7 @@ export async function executeQuery(
   return result
 }
 
-function generateLargeEmployeeDataset(dataSet: DataSet, maxRows: number): QueryResult {
-  const baseEmployee = dataSet.rows[0]
-  const departments = [
-    'Engineering',
-    'Marketing',
-    'Sales',
-    'HR',
-    'Finance',
-    'Research & Development',
-  ]
-
-  const rows = Array.from({ length: maxRows }, (_, i) => ({
-    ...baseEmployee,
-    id: i + 1,
-    name: `Employee ${i + 1}`,
-    email: `employee.${i + 1}@company.com`,
-    department: departments[i % departments.length],
-    salary: 50000 + Math.floor(Math.random() * 100000),
-    hireDate: new Date(
-      2020 + Math.floor(Math.random() * 4),
-      Math.floor(Math.random() * 12),
-      Math.floor(Math.random() * 28) + 1
-    )
-      .toISOString()
-      .split('T')[0],
-    isActive: Math.random() > 0.1,
-  }))
-
-  return {
-    columns: dataSet.columns.map(col => ({
-      key: col.id,
-      label: col.name,
-      type: col.type as 'string' | 'number' | 'boolean' | 'date',
-    })),
-    rows,
-    executionTime: 0,
-    rowCount: rows.length,
-  }
-}
-
-function processStandardQuery(dataSet: DataSet, query: string, maxRows?: number): QueryResult {
+function processStandardQuery(dataSet: DataSet, query: string): QueryResult {
   const columns = dataSet.columns.map(col => ({
     key: col.id,
     label: col.name,
@@ -102,11 +48,28 @@ function processStandardQuery(dataSet: DataSet, query: string, maxRows?: number)
 
   let rows = [...dataSet.rows]
 
-  if (maxRows) {
-    rows = rows.slice(0, maxRows)
+  // Generate more rows if needed for large limits
+  const limitMatch = query.match(/\blimit\s+(\d+)/i)
+  const requestedLimit = Math.max(limitMatch ? parseInt(limitMatch[1], 10) : 100, 1000000)
+
+  // If we need more rows than available, generate them
+  if (requestedLimit > rows.length && rows.length > 0) {
+    const baseRow = rows[0]
+    const additionalRows = []
+
+    for (let i = rows.length; i < requestedLimit; i++) {
+      const newRow = { ...baseRow }
+      // Update ID field if it exists
+      if ('id' in newRow) {
+        newRow.id = i + 1
+      }
+      additionalRows.push(newRow)
+    }
+
+    rows = [...rows, ...additionalRows]
   }
 
-  const limitMatch = query.match(/\blimit\s+(\d+)/i)
+  // Apply LIMIT clause
   if (limitMatch) {
     const limit = parseInt(limitMatch[1], 10)
     rows = rows.slice(0, limit)

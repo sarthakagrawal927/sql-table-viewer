@@ -1,23 +1,22 @@
-import { useState } from 'react'
-import { ScrollArea } from '../ui/scroll-area'
-import { Button } from '../ui/button'
-import { Badge } from '../ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import {
+  AlertCircle,
   BookOpen,
+  ChevronDown,
+  ChevronRight,
+  Database,
   History,
   Play,
-  Database,
-  Plus,
+  Table,
   Wifi,
   WifiOff,
-  AlertCircle,
-  ChevronRight,
-  ChevronDown,
-  Table,
 } from 'lucide-react'
-import { sampleQueries, sampleConnections } from '../../data/sampleData'
-import type { SQLQuery, QueryHistoryItem, DBConnection } from '../../types'
+import { useState } from 'react'
+import { sampleConnections, sampleQueries } from '../../data/sampleData'
+import type { DBConnection, QueryHistoryItem, SQLQuery } from '../../types'
+import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
+import { CardContent } from '../ui/card'
+import { ScrollArea } from '../ui/scroll-area'
 
 interface SidebarProps {
   className?: string

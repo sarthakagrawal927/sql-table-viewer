@@ -17,7 +17,7 @@ export interface QueryResult {
   error?: string
 }
 
-export interface Column {
+interface Column {
   key: string
   label: string
   type: 'string' | 'number' | 'boolean' | 'date' | 'null'

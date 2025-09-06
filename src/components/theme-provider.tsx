@@ -1,13 +1,13 @@
 import * as React from 'react'
 
-export type Theme = 'dark' | 'light' | 'system'
+type Theme = 'dark' | 'light' | 'system'
 
 type ThemeProviderState = {
   theme: Theme
   setTheme: (theme: Theme) => void
 }
 
-export const ThemeProviderContext = React.createContext<ThemeProviderState | undefined>(undefined)
+const ThemeProviderContext = React.createContext<ThemeProviderState | undefined>(undefined)
 
 export function useTheme(): ThemeProviderState {
   const context = React.useContext(ThemeProviderContext)
