@@ -3,7 +3,6 @@ import { createContext, useContext, useState, useCallback, type ReactNode } from
 import { useLocalStorage } from 'usehooks-ts'
 import type { QueryResult, QueryHistoryItem, QueryTab } from '../types'
 import { executeQuery } from '../lib/queryExecutor'
-import { v4 as uuid } from 'uuid'
 
 interface QueryContextType {
   // Tab management
@@ -43,7 +42,7 @@ interface QueryProviderProps {
 export function QueryProvider({ children }: QueryProviderProps) {
   // Initialize with first tab
   const initialTab: QueryTab = {
-    id: `tab-${uuid()}`,
+    id: 'tab-1',
     name: 'Query 1',
     query: 'SELECT * FROM employees',
     isExecuting: false,
@@ -51,6 +50,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
 
   const [tabs, setTabs] = useState<QueryTab[]>([initialTab])
   const [activeTabId, setActiveTabIdState] = useState<string>(initialTab.id)
+  const [nextTabId, setNextTabId] = useState<number>(2) // Next tab ID to use
 
   const [queryHistory, setQueryHistory] = useLocalStorage<QueryHistoryItem[]>(
     'sql-query-viewer-query-history',
@@ -64,14 +64,15 @@ export function QueryProvider({ children }: QueryProviderProps) {
   // Tab management functions
   const addTab = useCallback(() => {
     const newTab: QueryTab = {
-      id: `tab-${uuid()}`,
-      name: `Query ${tabs.length + 1}`,
+      id: `tab-${nextTabId}`,
+      name: `Query ${nextTabId}`,
       query: 'SELECT * FROM employees',
       isExecuting: false,
     }
     setTabs(prev => [...prev, newTab])
     setActiveTabIdState(newTab.id)
-  }, [tabs.length])
+    setNextTabId(prev => prev + 1)
+  }, [nextTabId])
 
   const closeTab = useCallback(
     (tabId: string) => {
