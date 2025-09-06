@@ -54,3 +54,17 @@ export interface QueryTab {
   query: string
   isExecuting: boolean
 }
+
+export interface DBConnection {
+  id: string
+  name: string
+  type: 'postgresql' | 'mysql' | 'sqlite' | 'mongodb' | 'redis' | 'oracle'
+  host: string
+  port: number
+  database: string
+  username: string
+  status: 'connected' | 'disconnected' | 'error'
+  lastConnected?: Date
+  description?: string
+  tables?: string[]
+}

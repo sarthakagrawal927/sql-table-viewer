@@ -12,7 +12,7 @@ interface QueryContextType {
   closeTab: (tabId: string) => void
   setActiveTabId: (tabId: string) => void
   updateTabQuery: (tabId: string, query: string) => void
-  
+
   // Query results
   queryResults: Record<string, QueryResult | null>
   queryHistory: QueryHistoryItem[]
@@ -198,7 +198,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
     closeTab,
     setActiveTabId,
     updateTabQuery,
-    
+
     // Query results
     queryResults,
     queryHistory,

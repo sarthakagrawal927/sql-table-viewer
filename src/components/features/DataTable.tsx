@@ -1,4 +1,4 @@
-import { useMemo, useState, memo, useCallback, useRef } from 'react'
+import { useMemo, useState, memo, useCallback, useRef, useEffect } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -27,8 +27,18 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [globalFilter, setGlobalFilter] = useState('')
+  const [debouncedGlobalFilter, setDebouncedGlobalFilter] = useState('')
 
   const parentRef = useRef<HTMLDivElement>(null)
+
+  // Debounce search for better performance with large datasets
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedGlobalFilter(globalFilter)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [globalFilter])
 
   const columns = useMemo<ColumnDef<Row>[]>(() => {
     if (!result) return []
@@ -101,7 +111,7 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
     state: {
       sorting,
       columnFilters,
-      globalFilter,
+      globalFilter: debouncedGlobalFilter,
     },
     enableRowSelection: false,
     enableMultiRowSelection: false,
@@ -178,6 +188,11 @@ export const DataTable = memo(function DataTable({ result, isLoading }: DataTabl
               <Badge variant="outline">{formatRowCount(result.rowCount)} rows</Badge>
               <Badge variant="outline">{result.columns.length} columns</Badge>
               <span>{result.executionTime.toFixed(0)}ms</span>
+              {result.rowCount > 100000 && (
+                <Badge variant="secondary" className="text-xs">
+                  Large dataset - search may be slower
+                </Badge>
+              )}
             </div>
           </div>
           <div className="flex items-center space-x-2">

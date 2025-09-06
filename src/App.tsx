@@ -1,16 +1,15 @@
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { ThemeProvider } from './components/theme-provider'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Header } from './components/features/Header'
 import { Sidebar } from './components/features/Sidebar'
-import { QueryEditor, type QueryEditorRef } from './components/features/QueryEditor'
+import { QueryEditor } from './components/features/QueryEditor'
 import { QueryTabs } from './components/features/QueryTabs'
 import { DataTable } from './components/features/DataTable'
 import { QueryProvider, useQuery } from './contexts/QueryContext'
 
 function AppContent() {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
-  const queryEditorRef = useRef<QueryEditorRef>(null)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
   const {
     tabs,
     activeTabId,
@@ -28,16 +27,6 @@ function AppContent() {
 
   const activeTab = tabs.find(tab => tab.id === activeTabId)
 
-  // Query editor functions
-  const setQueryInEditor = useCallback(
-    (query: string) => {
-      const activeId = activeTabId
-      if (!activeId) return
-      updateTabQuery(activeId, query)
-      queryEditorRef.current?.setQuery(query)
-    },
-    [activeTabId, updateTabQuery]
-  )
 
   const executeQuery = useCallback(
     (query: string) => {
@@ -65,10 +54,14 @@ function AppContent() {
               className="flex-shrink-0"
               queryHistory={queryHistory}
               onQuerySelect={query => {
-                setQueryInEditor(query.sql)
+                if (activeTabId) {
+                  updateTabQuery(activeTabId, query.sql)
+                }
               }}
               onHistorySelect={item => {
-                setQueryInEditor(item.query)
+                if (activeTabId) {
+                  updateTabQuery(activeTabId, item.query)
+                }
               }}
             />
           )}
@@ -85,8 +78,12 @@ function AppContent() {
                 />
                 <QueryEditor
                   key={activeTab?.id}
-                  ref={queryEditorRef}
-                  initialQuery={activeTab?.query ?? ''}
+                  query={activeTab?.query ?? 'SELECT * FROM employees'}
+                  onQueryChange={(query) => {
+                    if (activeTabId) {
+                      updateTabQuery(activeTabId, query)
+                    }
+                  }}
                   isExecuting={isExecuting}
                   onExecuteQuery={executeQuery}
                 />
