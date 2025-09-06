@@ -4,6 +4,8 @@ import { sampleDataSets } from '../data/sampleData'
 export async function executeQuery(sql: string): Promise<QueryResult> {
   const startTime = performance.now()
 
+  await new Promise(resolve => setTimeout(resolve, 800))
+
   const fromMatch = sql.match(/\bfrom\s+(\w+)/i)
   const tableName = fromMatch?.[1]?.toLowerCase()
 
@@ -50,7 +52,7 @@ function processStandardQuery(dataSet: DataSet, query: string): QueryResult {
 
   // Generate more rows if needed for large limits
   const limitMatch = query.match(/\blimit\s+(\d+)/i)
-  const requestedLimit = Math.max(limitMatch ? parseInt(limitMatch[1], 10) : 100, 1000000)
+  const requestedLimit = Math.min(limitMatch ? parseInt(limitMatch[1], 10) : 100, 500000)
 
   // If we need more rows than available, generate them
   if (requestedLimit > rows.length && rows.length > 0) {

@@ -25,6 +25,7 @@ Features (could have):
 - mobile view (??)
 - schema explorer
 - searchable history
+- keyboard bindings
 
 ## Implementation
 

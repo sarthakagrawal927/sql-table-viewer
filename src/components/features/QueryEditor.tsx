@@ -1,10 +1,10 @@
-import { useRef, useEffect } from 'react'
 import Editor from '@monaco-editor/react'
+import { BarChart3, Code, Play, Sparkles } from 'lucide-react'
 import type { editor } from 'monaco-editor'
-import { Play, Code, Sparkles, BarChart3 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Button } from '../ui/button'
+import { useEffect, useRef } from 'react'
 import { useTheme } from '../theme-provider'
+import { Button } from '../ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 
 interface QueryEditorProps {
   query: string
@@ -61,7 +61,7 @@ export function QueryEditor({
               Analyze
             </Button>
             <Button size="sm" onClick={handleExecute} disabled={isExecuting || !query.trim()}>
-              <Play className="h-4 w-4 mr-1" />
+              <Play className={`h-4 w-4 mr-1 ${isExecuting ? 'animate-spin' : ''}`} />
               {isExecuting ? 'Executing...' : 'Execute'}
             </Button>
           </div>
